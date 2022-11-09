@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from 'styled-components'
 
-function App() {
+import Task from './components/Task/Task'
+import type {ITask} from './typings'
+import React from 'react'
+
+
+const TasksMock = require('./mock/tasks').default
+const AppWrapper = styled.div`
+  width: 90%;
+  margin: 0 auto
+`
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AppWrapper>
+      {
+        TasksMock.map((task: ITask) => {
+          return <Task key={task.id} task={task}/>
+        })
+      }
+    </AppWrapper>
+  )
 }
 
-export default App;
+export default App
