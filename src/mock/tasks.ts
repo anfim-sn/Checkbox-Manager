@@ -1,5 +1,7 @@
+import {ITask} from '../typings'
 
-const TasksMock = [
+
+export const _tasks: ITask[] = [
   {
     id: 0,
     text: 'task0',
@@ -26,5 +28,3 @@ const TasksMock = [
     isDone: true,
   }
 ]
-
-export default TasksMock

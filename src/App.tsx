@@ -1,26 +1,32 @@
-import styled from 'styled-components'
-
-import Task from './components/Task/Task'
-import type {ITask} from './typings'
 import React from 'react'
+import styled, {createGlobalStyle} from 'styled-components'
+import {Task} from './components/Task/Task'
+import {_tasks} from './mock/tasks'
+import './common/scss/common.scss'
 
-
-const TasksMock = require('./mock/tasks').default
-const AppWrapper = styled.div`
-  width: 90%;
-  margin: 0 auto
+const GlobalStyled = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+  }
 `
 
-const App = () => {
-  return (
-    <AppWrapper>
-      {
-        TasksMock.map((task: ITask) => {
-          return <Task key={task.id} task={task}/>
-        })
-      }
+const AppWrapper = styled.div`
+  width: 90%;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`
+type Props = { isDev?: boolean }
+export const App = ({isDev = true}: Props) => (
+  <>
+    <GlobalStyled/>
+    {/*@ts-ignore*/}
+    <AppWrapper isDev={isDev}>
+      {_tasks.map((task) => <Task key={task.id} id={task.id} isDone={task.isDone} text={task.text}/>)}
     </AppWrapper>
-  )
-}
-
-export default App
+  </>
+)

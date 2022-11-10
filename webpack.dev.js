@@ -1,16 +1,19 @@
-const path = require("path");
-const Dotenv = require("dotenv-webpack");
-const webpack = require("webpack");
-const CopyPlugin = require("copy-webpack-plugin");
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require( "path" );
+const Dotenv = require( "dotenv-webpack" );
+const webpack = require( "webpack" );
+const CopyPlugin = require( "copy-webpack-plugin" );
+const TsconfigPathsPlugin = require( "tsconfig-paths-webpack-plugin" );
+const HtmlWebpackPlugin = require( "html-webpack-plugin" );
+const MiniCssExtractPlugin = require( "mini-css-extract-plugin" );
+
+
 const {
   createLoadableComponentsTransformer,
-} = require("typescript-loadable-components-plugin");
+} = require( "typescript-loadable-components-plugin" );
 const {
   getScssRule,
   getCssRule,
-} = require("./webpack.common");
+} = require( "./webpack.common" );
 
 module.exports = {
   mode: "development",
@@ -33,12 +36,12 @@ module.exports = {
   },
   module: {
     rules: [
-      getCssRule({
+      getCssRule( {
         isProdEnv: false,
-      }),
-      getScssRule({
+      } ),
+      getScssRule( {
         isProdEnv: false,
-      }),
+      } ),
       {
         test: /\.(?:tsx|ts|)$/,
         exclude: /(node_modules | __test__)/,
@@ -70,10 +73,10 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".css", ".scss"],
+    extensions: [ ".tsx", ".ts", ".js", ".css", ".scss" ],
     alias: {
-      "@core-fonts": path.join(__dirname, "./src/assets/fonts"),
-      "@core-images": path.join(__dirname, "./src/assets/images"),
+      "@core-fonts": path.join( __dirname, "./src/assets/fonts" ),
+      "@core-images": path.join( __dirname, "./src/assets/images" ),
       // ...alias,
     },
     plugins: [
@@ -83,15 +86,15 @@ module.exports = {
     ],
   },
   plugins: [
-    new Dotenv({
+    new Dotenv( {
       path: "./env/.env",
       // path: `./.env.${options.mode}`,
       systemvars: true,
-    }),
-    new webpack.ProvidePlugin({
+    } ),
+    new webpack.ProvidePlugin( {
       process: "process/browser.js",
-      Buffer: ["buffer", "Buffer"],
-    }),
+      Buffer: [ "buffer", "Buffer" ],
+    } ),
     // new CopyPlugin({
     //   patterns: [
     //     // {
@@ -122,8 +125,8 @@ module.exports = {
     //       ...moduleFederationPlugin,
     //     })
     //   : null,
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "./src/public/index.html"),
+    new HtmlWebpackPlugin( {
+      template: path.join( __dirname, "./src/public/index.html" ),
       inject: true,
       minify: true,
       publicPath: "/",
@@ -132,6 +135,6 @@ module.exports = {
       //   rc: false,
       //   prod: false,
       // },
-    }),
+    } ),
   ],
 };

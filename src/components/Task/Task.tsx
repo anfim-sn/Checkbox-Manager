@@ -1,25 +1,36 @@
-import React, {useState} from 'react';
-import type {ITask} from "../../typings";
+import React, {ChangeEventHandler, useState} from 'react'
+import type {ITask} from '../../typings'
+import styled from 'styled-components'
 
-type TaskProps = {
-  task: ITask
-}
+const TaskStyled = styled.div<Pick<ITask, 'isDone'>>`
+  width: auto;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 10px auto;
 
-const Task = ({task = {id: 0, text: '', isDone: false}}: TaskProps) => {
-  const {text, isDone} = task
-  const [checked, setChecked] = useState(isDone);
+  input {
+    width: 25px;
+    height: 25px;
+  }
 
+  p {
+    font-size: 25px;
+    text-decoration: ${p => p.isDone ? 'line-through' : 'none'}
+  }
+`
 
-  const checkHandler: React.ChangeEventHandler = () => {
+export const Task = ({isDone = false, text = ''}: ITask) => {
+  const [checked, setChecked] = useState(isDone)
+
+  const checkHandler: ChangeEventHandler = () => {
     setChecked(!checked)
   }
 
   return (
-    <div>
-      <input type={"checkbox"} checked={checked} onChange={checkHandler}/>
-      {text}
-    </div>
-  );
-};
-
-export default Task;
+    <TaskStyled isDone={checked}>
+      <input type="checkbox" checked={checked} onChange={checkHandler}/>
+      <p>{text}</p>
+    </TaskStyled>
+  )
+}
