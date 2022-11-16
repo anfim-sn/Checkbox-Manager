@@ -53,13 +53,11 @@ const TaskStyled = styled.div<Pick<ITask, 'isDone'>>`
     opacity: ${p => p.isDone ? '1' : '0'};
   }
 
-
   p {
+    text-transform: full-width;
     position: relative;
     font-size: 25px;
-    text-decoration: line-through;
-    text-decoration-color: ${p => p.isDone ? 'black' : 'transparent'};;
-    transition: text-decoration-color .1s;
+    text-decoration: ${p => p.isDone ? 'line-through' : 'none'};
   }
 `
 
@@ -69,6 +67,10 @@ export const Task = ({isDone = false, text = ''}: ITask) => {
   const checkHandler: ChangeEventHandler = () => {
     setChecked(!checked)
   }
+
+  text = text.split('. ').map((phrase) => {
+    return phrase.charAt(0).toUpperCase() + phrase.slice(1)
+  }).join('. ')
 
   return (
     <TaskStyled isDone={checked}>

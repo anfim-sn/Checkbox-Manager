@@ -7,7 +7,7 @@ const HeaderStyled = styled.header`
   display: flex;
   align-items: center;
   padding: 0 60px;
-  background: #925FF080;
+  background: #925FF050;
 
   p {
     font-size: 30px;
