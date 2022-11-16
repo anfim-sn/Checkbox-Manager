@@ -3,6 +3,7 @@ import styled, {createGlobalStyle} from 'styled-components'
 import {Task} from './components/Task/Task'
 import {_tasks} from './mock/tasks'
 import './common/scss/common.scss'
+import {Header} from './components/Header/Header'
 
 const GlobalStyled = createGlobalStyle`
   * {
@@ -14,18 +15,18 @@ const GlobalStyled = createGlobalStyle`
 `
 
 const AppWrapper = styled.div`
-  width: 90%;
+  width: 70%;
   margin: 50px auto;
   display: flex;
-  justify-content: center;
   flex-direction: column;
 `
-type Props = { isDev?: boolean }
-export const App = ({isDev = true}: Props) => (
+
+export const App = () => (
   <>
     <GlobalStyled/>
+    <Header/>
     {/*@ts-ignore*/}
-    <AppWrapper isDev={isDev}>
+    <AppWrapper>
       {_tasks.map((task) => <Task key={task.id} id={task.id} isDone={task.isDone} text={task.text}/>)}
     </AppWrapper>
   </>

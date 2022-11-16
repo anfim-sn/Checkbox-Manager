@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "serve": "nodemon",
+    "prisma migrate": "npx prisma migrate dev",
+    "prisma generate": "prisma generate",
+    "prisma format": "prisma format"
+  }
+}

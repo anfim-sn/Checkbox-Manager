@@ -17,7 +17,7 @@ const {
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.tsx",
+  entry: "./index.tsx",
   devtool: "inline-source-map",
   watchOptions: {
     poll: 1000,
@@ -81,13 +81,13 @@ module.exports = {
     },
     plugins: [
       // new TsconfigPathsPlugin({
-      //   configFile: path.join(__dirname, "./tsconfig.json"),
+      //   configFile: path.join(__dirname, "../tsconfig.json"),
       // }),
     ],
   },
   plugins: [
     new Dotenv( {
-      path: "./env/.env",
+      path: "../env/.env",
       // path: `./.env.${options.mode}`,
       systemvars: true,
     } ),

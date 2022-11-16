@@ -1,3 +1,6 @@
-node_modules
-build
-.idea
+/node_modules
+.env
+/.idea
+/frontend/build/
+/frontend/config/
+/backend/dist/
