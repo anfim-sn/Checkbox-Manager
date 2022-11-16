@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
-import {Task} from './components/Task/Task'
-import {_tasks} from './mock/tasks'
 import './common/scss/common.scss'
+import {Task} from './components/Task/Task'
 import {Header} from './components/Header/Header'
+import {TaskApi} from './services/TaskApi'
+import {ITask} from './typings'
 
 const GlobalStyled = createGlobalStyle`
   * {
@@ -13,7 +14,6 @@ const GlobalStyled = createGlobalStyle`
     font-family: "Roboto", sans-serif;
   }
 `
-
 const AppWrapper = styled.div`
   width: 70%;
   margin: 50px auto;
@@ -21,13 +21,28 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `
 
-export const App = () => (
-  <>
-    <GlobalStyled/>
-    <Header/>
-    {/*@ts-ignore*/}
-    <AppWrapper>
-      {_tasks.map((task) => <Task key={task.id} id={task.id} isDone={task.isDone} text={task.text}/>)}
-    </AppWrapper>
-  </>
-)
+const taskApi = new TaskApi()
+
+export const App = () => {
+  const [tasks, setTasks] = useState<ITask[] | null>()
+
+  const fetchTasks = async () => {
+    const tasks: ITask[] | null = await taskApi.findByUserId(1)
+    console.log(tasks)
+    setTasks(tasks)
+  }
+
+  useEffect(() => {
+    fetchTasks()
+  }, [])
+
+  return (
+    <>
+      <GlobalStyled/>
+      <Header/>
+      <AppWrapper>
+        {tasks?.map((task) => <Task key={task.id} id={task.id} isDone={task.isDone} text={task.text}/>)}
+      </AppWrapper>
+    </>
+  )
+}

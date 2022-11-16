@@ -87,8 +87,7 @@ module.exports = {
   },
   plugins: [
     new Dotenv( {
-      path: "../env/.env",
-      // path: `./.env.${options.mode}`,
+      path: "../.env",
       systemvars: true,
     } ),
     new webpack.ProvidePlugin( {
