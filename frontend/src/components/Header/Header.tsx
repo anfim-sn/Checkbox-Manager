@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
+import {useApiService} from '../../contexts/AppContext'
 
 const HeaderStyled = styled.header`
   width: 100%;
@@ -16,4 +17,11 @@ const HeaderStyled = styled.header`
   }
 `
 
-export const Header = () => <HeaderStyled><p>ESL Pro League</p></HeaderStyled>
+export const Header = () => {
+  const api = useApiService()
+
+  const tasks = api.getTaskByUserId(1)
+  console.log(tasks)
+
+  return <HeaderStyled><p>ESL Pro League</p></HeaderStyled>
+}
