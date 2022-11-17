@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
 import './common/scss/common.scss'
-import {Task} from './components/Task/Task'
 import {Header} from './components/Header/Header'
 import {ServicesContextProvider} from './contexts/AppContext'
 import {ApiService} from './services/ApiService'
+import {Tasks} from './components/Tasks/Tasks'
 
 const GlobalStyled = createGlobalStyle`
   * {
@@ -33,7 +33,7 @@ export const App = () => {
       {/*<button onClick={updateTask}>update</button>*/}
       {/*<button onClick={deleteTask}>delete</button>*/}
       <AppWrapper>
-        {/*{tasks?.map((task) => <Task key={task.id} id={task.id} isDone={task.isDone} text={task.text}/>)}*/}
+        <Tasks userId={1}/>
       </AppWrapper>
     </ServicesContextProvider>
   )
