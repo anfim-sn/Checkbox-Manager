@@ -66,4 +66,24 @@ export class ApiService {
       return e as string
     }
   }
+
+  static async checkedTask(id: number) {
+    try {
+      const url = `${this.url}task/${id}`
+      await axios.patch(url)
+      return `${id} task is checked`
+    } catch (e) {
+      return e as string
+    }
+  }
+
+  static async uncheckedTask(id: number) {
+    try {
+      const url = `${this.url}task/${id}`
+      await axios.patch(url)
+      return `${id} task is unchecked`
+    } catch (e) {
+      return e as string
+    }
+  }
 }

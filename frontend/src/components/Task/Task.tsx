@@ -1,71 +1,107 @@
-import React, {ChangeEventHandler, useState} from 'react'
+import React, {ChangeEventHandler, Dispatch, SetStateAction, useState} from 'react'
 import type {ITask} from '../../typings'
 import styled from 'styled-components'
+import {useApiService} from '../../contexts/AppContext'
 
-const TaskStyled = styled.div<Pick<ITask, 'isDone'>>`
+type TaskStyledProps = {
+  checked: number,
+  edit: boolean
+}
+
+const TaskStyled = styled.div<{ props: TaskStyledProps }>`
   width: auto;
   display: flex;
   gap: 20px;
   align-items: flex-start;
   margin: 15px 0;
 
-  input {
-    position: relative;
-    z-index: -1;
-    opacity: 0;
+  --main-color: #7e1492;
+  --light-main-color: #cf55de;
+
+  .checkbox__label {
+    cursor: ${p => p.props.checked === 0 ? p.props.edit ? 'not-allowed' : 'pointer' : 'pointer'};
+    ${p => p.props.checked === 2 ? p.props.edit ? 'animation: edit .5s infinite linear alternate' : '' : ''};
   }
 
-  label {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  .checkbox__label::before {
+    cursor: ${p => p.props.checked === 0 ? p.props.edit ? 'not-allowed' : 'pointer' : 'pointer'};
+    background: ${p => p.props.checked === 2 ? 'var(--main-color)' : 'transparent'};
   }
 
-  label::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    flex-shrink: 0;
-    flex-grow: 0;
-    border: 2px solid #925FF0;
-    border-radius: 9px;
-    cursor: pointer;
-    background: ${p => p.isDone ? '#925FF0' : 'transparent'};
-    transition: all .1s;
+  .checkbox__loader {
+    display: ${p => p.props.checked === 1 ? 'block' : 'none'};
   }
 
-  label::after {
-    content: '';
-    position: relative;
-    width: 11px;
-    height: 7px;
-    border: 3px solid white;
-    border-top: none;
-    border-right: none;
-    transform: rotate(-45deg);
-    top: 5px;
-    right: 7px;
-    opacity: ${p => p.isDone ? '1' : '0'};
+  .checkbox__loader-left::after {
+    background: ${p => p.props.checked === 1 ? 'var(--light-main-color)' : 'transparent'};
   }
 
-  p {
-    text-transform: full-width;
-    position: relative;
-    font-size: 25px;
-    text-decoration: ${p => p.isDone ? 'line-through' : 'none'};
+  .checkbox__loader-right::after {
+    background: ${p => p.props.checked === 1 ? 'var(--light-main-color)' : 'transparent'};
   }
+
+  .checkbox__label::after {
+    opacity: ${p => p.props.checked === 2 ? '1' : '0'};
+  }
+
+  .checkbox__text {
+    text-decoration: ${p => p.props.checked === 2 ? 'line-through' : 'none'};
+  }
+}
 `
 
-export const Task = ({isDone = false, text = ''}: ITask) => {
-  const [checked, setChecked] = useState(isDone)
+interface TaskProps extends Omit<ITask, 'userId'> {
+  edit: boolean
+  setTasks: Dispatch<SetStateAction<ITask[]>>
+}
+
+enum taskStatuses {
+  UNCHECK,
+  PRE_CHECK,
+  CHECK
+}
+
+export const Task = ({isDone = false, text = '', id = 0, edit = false, setTasks}: TaskProps) => {
+  const {UNCHECK, PRE_CHECK, CHECK} = taskStatuses
+  const [checked, setChecked] = useState<number>(isDone ? CHECK : UNCHECK)
+  const [timerId, setTimerId] = useState<NodeJS.Timeout>()
+  const api = useApiService()
 
   const checkHandler: ChangeEventHandler = () => {
-    setChecked(!checked)
+    switch (checked) {
+      case UNCHECK: {
+        if (edit) return
+        const id = setTimeout(() => {
+          setChecked(UNCHECK)
+        }, 3000)
+        setTimerId(id)
+        setChecked(PRE_CHECK)
+        return
+      }
+      case PRE_CHECK: {
+        setChecked(CHECK)
+        clearTimeout(timerId)
+        api.checkedTask(id)
+        setTasks(prevState =>
+          prevState.map(task => {
+            if (task.id === id) task.isDone = true
+            return task
+          }))
+        return
+      }
+      case CHECK: {
+        if (edit) {
+          setChecked(UNCHECK)
+          setTasks(prevState =>
+            prevState.map(task => {
+              if (task.id === id) task.isDone = false
+              return task
+            }))
+          api.uncheckedTask(id)
+        }
+        return
+      }
+    }
   }
 
   text = text.split('. ').map((phrase) => {
@@ -73,11 +109,15 @@ export const Task = ({isDone = false, text = ''}: ITask) => {
   }).join('. ')
 
   return (
-    <TaskStyled isDone={checked}>
-      <label>
-        <input type="checkbox" checked={checked} onChange={checkHandler}/>
+    <TaskStyled props={{checked, edit}}>
+      <label className="checkbox__label">
+        <div className="checkbox__loader">
+          <div className="checkbox__loader-left"/>
+          <div className="checkbox__loader-right"/>
+        </div>
+        <input className="checkbox__input" type="checkbox" checked={checked === CHECK} onChange={checkHandler}/>
       </label>
-      <p>{text}</p>
+      <p className="checkbox__text">{text}</p>
     </TaskStyled>
   )
 }

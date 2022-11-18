@@ -1,1 +1,135 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+$main-color: #7e1492;
+$light-main-color: #b24abf;
+$danger-color: #de163d;
+$alert-color: #e9d43d;
+
+.button {
+  padding: 5px 7px;
+  border-radius: 5px;
+  border: none;
+  background: $light-main-color;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.button:active {
+  background: $light-main-color;
+}
+
+.checkbox__input {
+  position: relative;
+  z-index: -1;
+  opacity: 0;
+}
+
+.checkbox__label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox__label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 2px solid $main-color;
+  border-radius: 9px;
+  background: $main-color;
+}
+
+.checkbox__loader {
+  position: absolute;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  z-index: -1;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.checkbox__loader-left, .checkbox__loader-right {
+  left: -5px;
+  top: -5px;
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  transition: all .1s;
+}
+
+.checkbox__loader-left {
+  clip: rect(0px, 21px, 42px, 0px);
+  background: white;
+}
+
+.checkbox__loader-left::after {
+  content: '';
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  clip: rect(0px, 21px, 42px, 0px);
+  animation: preCheck 1.5s linear both;
+  animation-delay: 1.5s;
+}
+
+.checkbox__loader-right {
+  clip: rect(0px, 42px, 42px, 21px);
+}
+
+.checkbox__loader-right::after {
+  content: '';
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  clip: rect(0px, 42px, 42px, 21px);
+  animation: preCheck 1.5s linear both;
+}
+
+.checkbox__label::after {
+  content: '';
+  position: relative;
+  width: 11px;
+  height: 7px;
+  border: 3px solid white;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+  top: 5px;
+  right: 6px;
+  transition: all .1s;
+}
+
+.checkbox__text {
+  text-transform: full-width;
+  position: relative;
+  font-size: 25px;
+}
+
+@keyframes preCheck {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes edit {
+  0% {
+    transform: rotate(-10deg);
+  }
+
+  100% {
+    transform: rotate(10deg);
+  }
+}

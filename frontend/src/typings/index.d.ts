@@ -1,8 +1,8 @@
 export interface ITask {
-  id?: number
-  text?: string
-  isDone?: boolean
-  userId?: number
+  id: number
+  text: string
+  isDone: boolean
+  userId: number
 }
 
 export interface ITaskApi {
