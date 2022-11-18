@@ -1,8 +1,7 @@
 import axios from 'axios'
-import {ITask} from '../typings'
+import {ITask, RequireAtLeastOne} from '../typings'
 
 type CreateTaskBody = Pick<ITask, 'text' | 'userId'>
-type UpdateTaskBody = Pick<ITask, 'id' | 'text'>
 
 export class ApiService {
   private static url = 'http://localhost:9001/'
@@ -12,7 +11,7 @@ export class ApiService {
       const response = await axios.get<ITask[] | string>(this.url)
       return response.data
     } catch (e) {
-      return e as string
+      throw new Error(e as string)
     }
   }
 
@@ -22,7 +21,7 @@ export class ApiService {
       const response = await axios.get<ITask[] | string>(url)
       return response.data
     } catch (e) {
-      return e as string
+      throw new Error(e as string)
     }
   }
 
@@ -32,7 +31,7 @@ export class ApiService {
       const response = await axios.get(url)
       return response.data
     } catch (e) {
-      return e as string
+      throw new Error(e as string)
     }
   }
 
@@ -42,18 +41,17 @@ export class ApiService {
       const response = await axios.post<ITask | string>(this.url, {text, userId})
       return response.data
     } catch (e) {
-      return e as string
+      throw new Error(e as string)
     }
   }
 
-  static async updateTask({id, text}: UpdateTaskBody) {
-    if (!text) return 'text is empty'
+  static async updateTask(fields: RequireAtLeastOne<Omit<ITask, 'id'>> & Required<Pick<ITask, 'id'>>) {
     try {
-      const url = `${this.url}task/${id}`
-      const response = await axios.put(url, {text})
+      const url = `${this.url}task`
+      const response = await axios.patch(url, {...fields})
       return response.data
     } catch (e) {
-      return e as string
+      throw new Error(e as string)
     }
   }
 
@@ -63,27 +61,7 @@ export class ApiService {
       await axios.delete(url)
       return `${id} task is deleted`
     } catch (e) {
-      return e as string
-    }
-  }
-
-  static async checkedTask(id: number) {
-    try {
-      const url = `${this.url}task/${id}`
-      await axios.patch(url)
-      return `${id} task is checked`
-    } catch (e) {
-      return e as string
-    }
-  }
-
-  static async uncheckedTask(id: number) {
-    try {
-      const url = `${this.url}task/${id}`
-      await axios.patch(url)
-      return `${id} task is unchecked`
-    } catch (e) {
-      return e as string
+      throw new Error(e as string)
     }
   }
 }

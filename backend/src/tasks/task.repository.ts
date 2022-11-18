@@ -5,11 +5,11 @@ import {ITask} from './task.interface'
 export class TaskRepository implements ITaskRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getAll(): Promise<Task[] | string> {
+  async getAll(): Promise<Task[]> {
     try {
       return this.prisma.task.findMany()
     } catch (e) {
-      return e as string
+      throw new Error(e)
     }
   }
 
@@ -19,7 +19,7 @@ export class TaskRepository implements ITaskRepository {
         where: {id}
       })
     } catch (e) {
-      return e as string
+      throw new Error(e)
     }
   }
 
@@ -29,7 +29,7 @@ export class TaskRepository implements ITaskRepository {
         where: {userId}
       })
     } catch (e) {
-      return e as string
+      throw new Error(e)
     }
   }
 
@@ -51,18 +51,17 @@ export class TaskRepository implements ITaskRepository {
     }
   }
 
-  async update(id: number, text: string): Promise<Task | string> {
+  async update(fields: Partial<ITask>): Promise<Task | string> {
+    const {id, text, isDone} = fields
     try {
       return this.prisma.task.update({
-        where: {
-          id
-        }, data: {
-          text
+        where: {id}, data: {
+          text,
+          isDone,
         }
       })
-
     } catch (e) {
-      return e as string
+      throw new Error(e)
     }
   }
 
@@ -74,35 +73,7 @@ export class TaskRepository implements ITaskRepository {
         }
       })
     } catch (e) {
-      return e as string
-    }
-  }
-
-  async checked(id: number): Promise<Task | string> {
-    try {
-      return this.prisma.task.update({
-        where: {
-          id,
-        }, data: {
-          isDone: true
-        }
-      })
-    } catch (error) {
-      return error
-    }
-  }
-
-  async unchecked(id: number): Promise<Task | string> {
-    try {
-      return this.prisma.task.update({
-        where: {
-          id,
-        }, data: {
-          isDone: false
-        }
-      })
-    } catch (error) {
-      return error
+      throw new Error(e)
     }
   }
 }

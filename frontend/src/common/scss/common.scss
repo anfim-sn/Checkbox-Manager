@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-$main-color: #7e1492;
-$light-main-color: #b24abf;
+$main-color: #359d35;
+$light-main-color: #93FE96;
 $danger-color: #de163d;
 $alert-color: #e9d43d;
 
@@ -9,7 +9,7 @@ $alert-color: #e9d43d;
   padding: 5px 7px;
   border-radius: 5px;
   border: none;
-  background: $light-main-color;
+  background: $danger-color;
   color: white;
   cursor: pointer;
   font-size: 15px;
@@ -31,6 +31,7 @@ $alert-color: #e9d43d;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .checkbox__label::before {
@@ -44,83 +45,51 @@ $alert-color: #e9d43d;
   flex-grow: 0;
   border: 2px solid $main-color;
   border-radius: 9px;
-  background: $main-color;
+  cursor: pointer;
 }
 
-.checkbox__loader {
+.checkbox__background {
   position: absolute;
-  top: 0;
-  width: 30px;
-  height: 30px;
+  top: 1px;
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   z-index: -1;
-  border-radius: 9px;
-  overflow: hidden;
-}
-
-.checkbox__loader-left, .checkbox__loader-right {
-  left: -5px;
-  top: -5px;
-  position: absolute;
-  width: 42px;
-  height: 42px;
-  transition: all .1s;
-}
-
-.checkbox__loader-left {
-  clip: rect(0px, 21px, 42px, 0px);
-  background: white;
-}
-
-.checkbox__loader-left::after {
-  content: '';
-  position: absolute;
-  width: 42px;
-  height: 42px;
-  clip: rect(0px, 21px, 42px, 0px);
-  animation: preCheck 1.5s linear both;
-  animation-delay: 1.5s;
-}
-
-.checkbox__loader-right {
-  clip: rect(0px, 42px, 42px, 21px);
-}
-
-.checkbox__loader-right::after {
-  content: '';
-  position: absolute;
-  width: 42px;
-  height: 42px;
-  clip: rect(0px, 42px, 42px, 21px);
-  animation: preCheck 1.5s linear both;
 }
 
 .checkbox__label::after {
   content: '';
   position: relative;
   width: 11px;
-  height: 7px;
+  height: 9px;
   border: 3px solid white;
   border-top: none;
   border-right: none;
   transform: rotate(-45deg);
   top: 5px;
-  right: 6px;
+  right: 7px;
   transition: all .1s;
+  cursor: pointer;
 }
 
 .checkbox__text {
-  text-transform: full-width;
   position: relative;
   font-size: 25px;
 }
 
-@keyframes preCheck {
-  0% {
-    transform: rotate(0deg);
-  }
+.desciption__text {
+  font-size: 18px;
+  color: slategray;
+  margin: 20px 0;
+}
 
+@keyframes loading {
+  0% {
+    transform: translateY(0%)
+  }
   100% {
-    transform: rotate(180deg);
+    transform: translateY(100%);
   }
 }
 

@@ -6,16 +6,31 @@ const HeaderStyled = styled.header`
   height: 100px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 60px;
-  background: #925FF050;
+  background: #5FF0614F;
 
-  p {
+  h1 {
     font-size: 30px;
     font-weight: bold;
     color: #333333;
   }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 20px;
+    font-weight: normal;
+    color: #333333;
+  }
+
 `
 
 export const Header = () => {
-  return <HeaderStyled><p>ESL Pro League</p></HeaderStyled>
+  return <HeaderStyled>
+    <h1>ESL Pro League</h1>
+    <p>Anfim Snegirev / <span className="bold">Light Operator</span></p>
+  </HeaderStyled>
 }

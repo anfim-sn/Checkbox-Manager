@@ -4,21 +4,13 @@ import {ITask} from '../../typings'
 import {Task} from '../Task/Task'
 import styled from 'styled-components'
 
-const TasksStyled = styled.div<{ edit: boolean }>`
-  --main-color: #7e1492;
-  --light-main-color: #b24abf;
-
-  .edit-button {
-    background: ${p => p.edit ? 'var(--light-main-color)' : 'var(--main-color)'}
-  }
-`
+const TasksStyled = styled.div``
 
 export const Tasks = ({userId}: { userId: number }) => {
-  const [tasks, setTasks] = useState<ITask[]>([])
-  const [editMode, setEditMode] = useState<boolean>(false)
-  const checkedTask = tasks.find(task => task.isDone)
-  const isAllTaskUnchecked = !checkedTask
   const api = useApiService()
+  const [tasks, setTasks] = useState<ITask[]>([])
+  // const checkedTask = tasks.find(task => task.isDone)
+  // const isAllTaskUnchecked = !checkedTask
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,23 +23,25 @@ export const Tasks = ({userId}: { userId: number }) => {
     fetchData()
   }, [userId])
 
-  const editModeHandler = () => {
-    if (!isAllTaskUnchecked) setEditMode(prev => !prev)
-  }
+  const hasTasks = tasks.length > 0
 
   return (
-    <TasksStyled edit={editMode}>
-      <button className="button edit-button" onClick={editModeHandler}>Uncheck</button>
-      {tasks.map((task) =>
-        <Task
-          key={task.id}
-          id={task.id}
-          isDone={task.isDone}
-          text={task.text}
-          edit={editMode}
-          setTasks={setTasks}
-        />
+    <TasksStyled>
+      {hasTasks && (
+        <>
+          <p className="desciption__text">Click to checked task</p>
+          {tasks.map((task) =>
+            <Task
+              key={task.id}
+              id={task.id}
+              isDone={task.isDone}
+              text={task.text}
+            />
+          )}
+        </>
       )}
+      {!hasTasks && <p className="desciption__text">No tasks</p>}
+      {/*{!error && <p className="desciption__text">No tasks</p>}*/}
     </TasksStyled>
   )
 }

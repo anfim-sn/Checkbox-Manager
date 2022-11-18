@@ -1,3 +1,5 @@
+export type RequireAtLeastOne<T> = { [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>; }[keyof T]
+
 export interface ITask {
   id: number
   text: string
@@ -14,3 +16,4 @@ export interface ITaskApi {
   delete: (id: number) => Promise<ITask | null>
   findByUserId: (id: number) => Promise<ITask[] | null>
 }
+
