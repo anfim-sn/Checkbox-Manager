@@ -31,7 +31,7 @@ export const Task = ({isDone = false, text = '', id = 0}) => {
   const api = useApiService()
 
   const checkHandler: ChangeEventHandler = async () => {
-    const response = await api.updateTask({id, isDone: true})
+    const response = await api.updateTask({id, isDone: !checked})
     response && setChecked(prevState => !prevState)
   }
 
