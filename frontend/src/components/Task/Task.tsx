@@ -1,8 +1,8 @@
-import React, {ChangeEventHandler, useState} from 'react'
-import styled from 'styled-components'
-import {useApiService} from '../../contexts/AppContext'
+import React, { ChangeEventHandler, useState } from 'react';
+import styled from 'styled-components';
+import { useApiService } from '../../contexts/AppContext';
 
-const TaskStyled = styled.div<{ checked: boolean }>`
+const TaskStyled = styled.div<{ p: { checked: boolean; isConfirmLoading: boolean } }>`
   width: auto;
   display: flex;
   gap: 20px;
@@ -13,44 +13,60 @@ const TaskStyled = styled.div<{ checked: boolean }>`
   --light-main-color: #85d687;
 
   .checkbox__background {
-    background: ${p => p.checked ? 'var(--main-color)' : 'transparent'};
+    background: ${p => (p.p.checked ? 'var(--main-color)' : 'transparent')};
   }
 
   .checkbox__label::after {
-    opacity: ${p => p.checked ? '1' : '0'};
+    opacity: ${p => (p.p.checked ? '1' : '0')};
   }
 
   .checkbox__text {
-    text-decoration: ${p => p.checked ? 'line-through' : 'none'};
-  }
-}
-`
-
-export const Task = ({isDone = false, text = '', id = 0}) => {
-  const [checked, setChecked] = useState(isDone)
-  const api = useApiService()
-
-  const checkHandler: ChangeEventHandler = async () => {
-    const response = await api.updateTask({id, isDone: !checked})
-    response && setChecked(prevState => !prevState)
+    text-decoration: ${p => (p.p.checked ? 'line-through' : 'none')};
   }
 
-  text = text.split('. ').map((phrase) => {
-    return phrase.charAt(0).toUpperCase() + phrase.slice(1)
-  }).join('. ')
+  .checkbox__loader {
+    opacity: ${p => (p.p.isConfirmLoading ? 1 : 0)};
+  }
+`;
+
+export const Task = ({ isDone = false, text = '', id = 0 }) => {
+  const [checked, setChecked] = useState(isDone);
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
+  const api = useApiService();
+  console.log(isConfirmLoading);
+
+  const checkHandler: ChangeEventHandler = () => {
+    setIsConfirmLoading(true);
+    setChecked(prevState => !prevState);
+    api
+      .updateTask({ id, isDone: !checked })
+      .catch(() => setChecked(prevState => !prevState))
+      .finally(() => setIsConfirmLoading(false));
+  };
+
+  text = text
+    .split('. ')
+    .map(phrase => {
+      return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+    })
+    .join('. ');
 
   return (
-    <TaskStyled checked={checked}>
+    <TaskStyled p={{ checked, isConfirmLoading }}>
       <label className="checkbox__label">
-        <div className="checkbox__background"/>
-        <input className="checkbox__input" type="checkbox" checked={checked} onChange={checkHandler}/>
+        <div className="checkbox__loader" />
+        <div className="checkbox__background" />
+        <input
+          className="checkbox__input"
+          type="checkbox"
+          checked={checked}
+          onChange={checkHandler}
+        />
       </label>
       <p className="checkbox__text">{text}</p>
     </TaskStyled>
-  )
-}
+  );
+};
 
-//TODO: skeleton animation on loading
-//TODO: click doesnt must set cheked if server error
 //TODO: show message if tasks doesnt load because server error
 //TODO: catch the errors without fall the server
