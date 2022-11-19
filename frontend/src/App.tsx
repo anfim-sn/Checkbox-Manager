@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
 import './common/scss/common.scss'
-import {Task} from './components/Task/Task'
 import {Header} from './components/Header/Header'
-import {TaskApi} from './services/TaskApi'
-import {ITask} from './typings'
+import {ServicesContextProvider} from './contexts/AppContext'
+import {ApiService} from './services/ApiService'
+import {Tasks} from './components/Tasks/Tasks'
 
 const GlobalStyled = createGlobalStyle`
   * {
@@ -21,28 +21,20 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `
 
-const taskApi = new TaskApi()
-
 export const App = () => {
-  const [tasks, setTasks] = useState<ITask[] | null>()
-
-  const fetchTasks = async () => {
-    const tasks: ITask[] | null = await taskApi.findByUserId(1)
-    console.log(tasks)
-    setTasks(tasks)
-  }
-
-  useEffect(() => {
-    fetchTasks()
-  }, [])
 
   return (
-    <>
+    <ServicesContextProvider value={{
+      apiService: ApiService
+    }}>
       <GlobalStyled/>
       <Header/>
+      {/*<button onClick={createTask}>create</button>*/}
+      {/*<button onClick={updateTask}>update</button>*/}
+      {/*<button onClick={deleteTask}>delete</button>*/}
       <AppWrapper>
-        {tasks?.map((task) => <Task key={task.id} id={task.id} isDone={task.isDone} text={task.text}/>)}
+        <Tasks userId={1}/>
       </AppWrapper>
-    </>
+    </ServicesContextProvider>
   )
 }

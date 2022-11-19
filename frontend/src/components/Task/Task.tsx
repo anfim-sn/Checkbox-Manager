@@ -1,81 +1,72 @@
-import React, {ChangeEventHandler, useState} from 'react'
-import type {ITask} from '../../typings'
-import styled from 'styled-components'
+import React, { ChangeEventHandler, useState } from 'react';
+import styled from 'styled-components';
+import { useApiService } from '../../contexts/AppContext';
 
-const TaskStyled = styled.div<Pick<ITask, 'isDone'>>`
+const TaskStyled = styled.div<{ p: { checked: boolean; isConfirmLoading: boolean } }>`
   width: auto;
   display: flex;
   gap: 20px;
   align-items: flex-start;
   margin: 15px 0;
 
-  input {
-    position: relative;
-    z-index: -1;
-    opacity: 0;
+  --main-color: #359d35;
+  --light-main-color: #85d687;
+
+  .checkbox__background {
+    background: ${p => (p.p.checked ? 'var(--main-color)' : 'transparent')};
   }
 
-  label {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  .checkbox__label::after {
+    opacity: ${p => (p.p.checked ? '1' : '0')};
   }
 
-  label::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    flex-shrink: 0;
-    flex-grow: 0;
-    border: 2px solid #925FF0;
-    border-radius: 9px;
-    cursor: pointer;
-    background: ${p => p.isDone ? '#925FF0' : 'transparent'};
-    transition: all .1s;
+  .checkbox__text {
+    text-decoration: ${p => (p.p.checked ? 'line-through' : 'none')};
   }
 
-  label::after {
-    content: '';
-    position: relative;
-    width: 11px;
-    height: 7px;
-    border: 3px solid white;
-    border-top: none;
-    border-right: none;
-    transform: rotate(-45deg);
-    top: 5px;
-    right: 7px;
-    opacity: ${p => p.isDone ? '1' : '0'};
+  .checkbox__loader {
+    opacity: ${p => (p.p.isConfirmLoading ? 1 : 0)};
   }
+`;
 
-
-  p {
-    position: relative;
-    font-size: 25px;
-    text-decoration: line-through;
-    text-decoration-color: ${p => p.isDone ? 'black' : 'transparent'};;
-    transition: text-decoration-color .1s;
-  }
-`
-
-export const Task = ({isDone = false, text = ''}: ITask) => {
-  const [checked, setChecked] = useState(isDone)
+export const Task = ({ isDone = false, text = '', id = 0 }) => {
+  const [checked, setChecked] = useState(isDone);
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
+  const api = useApiService();
+  console.log(isConfirmLoading);
 
   const checkHandler: ChangeEventHandler = () => {
-    setChecked(!checked)
-  }
+    setIsConfirmLoading(true);
+    setChecked(prevState => !prevState);
+    api
+      .updateTask({ id, isDone: !checked })
+      .catch(() => setChecked(prevState => !prevState))
+      .finally(() => setIsConfirmLoading(false));
+  };
+
+  text = text
+    .split('. ')
+    .map(phrase => {
+      return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+    })
+    .join('. ');
 
   return (
-    <TaskStyled isDone={checked}>
-      <label>
-        <input type="checkbox" checked={checked} onChange={checkHandler}/>
+    <TaskStyled p={{ checked, isConfirmLoading }}>
+      <label className="checkbox__label">
+        <div className="checkbox__loader" />
+        <div className="checkbox__background" />
+        <input
+          className="checkbox__input"
+          type="checkbox"
+          checked={checked}
+          onChange={checkHandler}
+        />
       </label>
-      <p>{text}</p>
+      <p className="checkbox__text">{text}</p>
     </TaskStyled>
-  )
-}
+  );
+};
+
+//TODO: show message if tasks doesnt load because server error
+//TODO: catch the errors without fall the server
