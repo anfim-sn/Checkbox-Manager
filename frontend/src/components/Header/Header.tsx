@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
 const HeaderStyled = styled.header`
   width: 100%;
@@ -25,7 +25,7 @@ const HeaderStyled = styled.header`
     font-weight: normal;
     color: #333333;
   }
-`;
+`
 
 export const Header = () => {
   return (
@@ -35,5 +35,5 @@ export const Header = () => {
         Anfim Snegirev / <span className="bold">Light Operator</span>
       </p>
     </HeaderStyled>
-  );
-};
+  )
+}

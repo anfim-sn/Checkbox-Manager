@@ -1,13 +1,13 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
-const path = require('path');
-const { createLoadableComponentsTransformer } = require('typescript-loadable-components-plugin');
-const { getModuleFederationPlugin, getScssRule, getCssRule } = require('./webpack.common');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
+const path = require('path')
+const { createLoadableComponentsTransformer } = require('typescript-loadable-components-plugin')
+const { getModuleFederationPlugin, getScssRule, getCssRule } = require('./webpack.common')
 
 const buildProductionConfig = ({
   moduleFederationPlugin,
@@ -37,7 +37,7 @@ const buildProductionConfig = ({
             {
               loader: 'ts-loader',
               options: {
-                getCustomTransformers: (program) => ({
+                getCustomTransformers: program => ({
                   before: [createLoadableComponentsTransformer(program, {})],
                 }),
               },
@@ -122,13 +122,13 @@ const buildProductionConfig = ({
             to: `${appFolder && `${appFolder}/`}assets/fonts`,
           },
           ...copyToAssets.map((path = '') => {
-            if (!path) return {};
-            const folderName = path.split('/').pop();
+            if (!path) return {}
+            const folderName = path.split('/').pop()
 
             return {
               from: path,
               to: `${appFolder && `${appFolder}/`}assets/${folderName}`,
-            };
+            }
           }),
         ],
       }),
@@ -155,7 +155,7 @@ const buildProductionConfig = ({
       }),
       ...plugins,
     ],
-  };
-};
+  }
+}
 
-module.exports = buildProductionConfig;
+module.exports = buildProductionConfig

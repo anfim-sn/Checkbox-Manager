@@ -1,10 +1,10 @@
 import React from 'react'
-import styled, {createGlobalStyle} from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import './common/scss/common.scss'
-import {Header} from './components/Header/Header'
-import {ServicesContextProvider} from './contexts/AppContext'
-import {ApiService} from './services/ApiService'
-import {Tasks} from './components/Tasks/Tasks'
+import { Header } from './components/Header/Header'
+import { ServicesContextProvider } from './contexts/AppContext'
+import { ApiService } from './services/ApiService'
+import { Tasks } from './components/Tasks/Tasks'
 
 const GlobalStyled = createGlobalStyle`
   * {
@@ -22,18 +22,16 @@ const AppWrapper = styled.div`
 `
 
 export const App = () => {
-
   return (
-    <ServicesContextProvider value={{
-      apiService: ApiService
-    }}>
-      <GlobalStyled/>
-      <Header/>
-      {/*<button onClick={createTask}>create</button>*/}
-      {/*<button onClick={updateTask}>update</button>*/}
-      {/*<button onClick={deleteTask}>delete</button>*/}
+    <ServicesContextProvider
+      value={{
+        apiService: ApiService,
+      }}
+    >
+      <GlobalStyled />
+      <Header />
       <AppWrapper>
-        <Tasks userId={1}/>
+        <Tasks userId={1} />
       </AppWrapper>
     </ServicesContextProvider>
   )

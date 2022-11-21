@@ -1,6 +1,6 @@
-import React, { ChangeEventHandler, useState } from 'react';
-import styled from 'styled-components';
-import { useApiService } from '../../contexts/AppContext';
+import React, { ChangeEventHandler, useState } from 'react'
+import styled from 'styled-components'
+import { useApiService } from '../../contexts/AppContext'
 
 const TaskStyled = styled.div<{ p: { checked: boolean; isConfirmLoading: boolean } }>`
   width: auto;
@@ -27,46 +27,37 @@ const TaskStyled = styled.div<{ p: { checked: boolean; isConfirmLoading: boolean
   .checkbox__loader {
     opacity: ${p => (p.p.isConfirmLoading ? 1 : 0)};
   }
-`;
+`
 
 export const Task = ({ isDone = false, text = '', id = 0 }) => {
-  const [checked, setChecked] = useState(isDone);
-  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
-  const api = useApiService();
-  console.log(isConfirmLoading);
+  const [checked, setChecked] = useState(isDone)
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false)
+  const api = useApiService()
 
   const checkHandler: ChangeEventHandler = () => {
-    setIsConfirmLoading(true);
-    setChecked(prevState => !prevState);
+    setIsConfirmLoading(true)
+    setChecked(prevState => !prevState)
     api
       .updateTask({ id, isDone: !checked })
       .catch(() => setChecked(prevState => !prevState))
-      .finally(() => setIsConfirmLoading(false));
-  };
+      .finally(() => setIsConfirmLoading(false))
+  }
 
   text = text
     .split('. ')
     .map(phrase => {
-      return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+      return phrase.charAt(0).toUpperCase() + phrase.slice(1)
     })
-    .join('. ');
+    .join('. ')
 
   return (
     <TaskStyled p={{ checked, isConfirmLoading }}>
       <label className="checkbox__label">
         <div className="checkbox__loader" />
         <div className="checkbox__background" />
-        <input
-          className="checkbox__input"
-          type="checkbox"
-          checked={checked}
-          onChange={checkHandler}
-        />
+        <input className="checkbox__input" type="checkbox" checked={checked} onChange={checkHandler} />
       </label>
       <p className="checkbox__text">{text}</p>
     </TaskStyled>
-  );
-};
-
-//TODO: show message if tasks doesnt load because server error
-//TODO: catch the errors without fall the server
+  )
+}
