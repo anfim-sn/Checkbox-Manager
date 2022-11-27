@@ -23,13 +23,15 @@ model Category {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   text        String
   description String
   isDone      Boolean
-  userId      Int
-  categoryId  Int
-  parentId    Int
-  user        User     @relation(fields: [userId], references: [id])
-  category    Category @relation(fields: [categoryId], references: [id])
+  userId      Int?
+  categoryId  Int?
+  parentId    Int?
+  user        User?     @relation(fields: [userId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id])
+  parent      Task?     @relation("TaskParent", fields: [parentId], references: [id])
+  task        Task[]    @relation("TaskParent")
 }
