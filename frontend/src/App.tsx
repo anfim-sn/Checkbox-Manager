@@ -1,10 +1,11 @@
 import React from 'react'
-import styled, { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 import './common/scss/common.scss'
-import { Header } from './components/Header/Header'
-import { ServicesContextProvider } from './contexts/AppContext'
+import { ServicesProvider } from './contexts/ServiceContext'
 import { ApiService } from './services/ApiService'
-import { Tasks } from './components/Tasks/Tasks'
+import { Router } from './router/Router'
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
 
 const GlobalStyled = createGlobalStyle`
   * {
@@ -12,27 +13,22 @@ const GlobalStyled = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
+    background: #333;
+    color: #fff;
   }
-`
-const AppWrapper = styled.div`
-  width: 70%;
-  margin: 50px auto;
-  display: flex;
-  flex-direction: column;
 `
 
 export const App = () => {
   return (
-    <ServicesContextProvider
-      value={{
-        apiService: ApiService,
-      }}
-    >
+    <>
       <GlobalStyled />
-      <Header />
-      <AppWrapper>
-        <Tasks userId={1} />
-      </AppWrapper>
-    </ServicesContextProvider>
+      <BrowserRouter>
+        <ServicesProvider value={{ apiService: ApiService }}>
+          <AuthProvider>
+            <Router />
+          </AuthProvider>
+        </ServicesProvider>
+      </BrowserRouter>
+    </>
   )
 }

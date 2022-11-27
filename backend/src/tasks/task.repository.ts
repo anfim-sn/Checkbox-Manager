@@ -43,7 +43,7 @@ export class TaskRepository implements ITaskRepository {
         ? this.prisma.task.create({
             data: {
               text,
-              description,
+              description: description || null,
               isDone: false,
               user: { connect: { id: userId } },
             },

@@ -1,7 +1,12 @@
 export interface ITask {
   id?: number
   text: string
-  description: string
+  description?: string
   isDone: boolean
-  userId: number
+  userId?: number
+  categoryId?: number
+  parentId?: number
+
+  createdAt?: Date
+  updatedAt?: Date
 }

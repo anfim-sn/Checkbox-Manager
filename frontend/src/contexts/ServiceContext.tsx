@@ -11,7 +11,7 @@ const useServices = () => useContext(ServicesContext)
 
 export const useApiService = () => useServices().apiService
 
-export const ServicesContextProvider: FC<{
+export const ServicesProvider: FC<{
   value: IServicesContext
   children?: React.ReactNode
 }> = ({ value, children }) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useApiService } from '../../contexts/AppContext'
+import { useApiService } from '../../contexts/ServiceContext'
 import { ITask } from '../../typings'
 import { Task } from '../Task/Task'
 import styled from 'styled-components'
