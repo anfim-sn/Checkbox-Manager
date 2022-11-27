@@ -16,10 +16,20 @@ model User {
   Task Task[]
 }
 
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  Task Task[]
+}
+
 model Task {
-  id     Int     @id @default(autoincrement())
-  text   String
-  isDone Boolean
-  userId Int
-  user   User    @relation(fields: [userId], references: [id])
+  id          Int      @id @default(autoincrement())
+  text        String
+  description String
+  isDone      Boolean
+  userId      Int
+  categoryId  Int
+  parentId    Int
+  user        User     @relation(fields: [userId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
 }
