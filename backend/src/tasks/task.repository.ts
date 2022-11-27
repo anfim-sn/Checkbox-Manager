@@ -36,13 +36,14 @@ export class TaskRepository implements ITaskRepository {
     }
   }
 
-  async create({ text, userId }: Omit<ITask, 'isDone'>): Promise<Task | string> {
+  async create({ text, userId, description }: Omit<ITask, 'isDone'>): Promise<Task | string> {
     try {
       const user = await this.prisma.user.findFirst({ where: { id: userId } })
       return user
         ? this.prisma.task.create({
             data: {
               text,
+              description,
               isDone: false,
               user: { connect: { id: userId } },
             },
@@ -54,7 +55,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async update(fields: Partial<ITask>): Promise<Task | string> {
-    const { id, text, isDone } = fields
+    const { id, text, description, isDone } = fields
     try {
       const task = await this.prisma.task.findFirst({ where: { id } })
       return task
@@ -62,6 +63,7 @@ export class TaskRepository implements ITaskRepository {
             where: { id },
             data: {
               text,
+              description,
               isDone,
             },
           })
