@@ -16,7 +16,7 @@ export const AuthProvider: FC<{
   children?: React.ReactNode
 }> = ({
   value = {
-    isAdmin: true,
+    isAdmin: false,
   },
   children,
 }) => {
