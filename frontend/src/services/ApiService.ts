@@ -21,8 +21,7 @@ export class ApiService {
       const response = await axios.get<ITask[]>(url)
       return response.data
     } catch ({ message }) {
-      // return Promise.reject(message)
-      throw new Error('500 Server Error')
+      return Promise.reject(message)
     }
   }
 

@@ -3,7 +3,7 @@ import { Tasks } from '../components/Tasks/Tasks'
 import { Header } from '../components/Header/Header'
 import styled from 'styled-components'
 import { ErrorBoundary } from 'react-error-boundary'
-import { TaskErrorFallback } from '../components/TaskErrorFallback'
+import { TaskErrorFallback } from '../components/TaskErrorFallback/TaskErrorFallback'
 
 const TaskPageStyled = styled.div`
   width: 70%;

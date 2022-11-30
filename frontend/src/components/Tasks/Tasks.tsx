@@ -49,6 +49,8 @@ export const Tasks = ({ userId }: { userId: number }) => {
       .finally(() => setIsLoading(false))
   }, [userId])
 
+  if (error) throw error
+
   return (
     <TasksStyled className="tasks">
       {isLoading ? (
