@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '../Button/Button'
+import { MyButton } from '../Button/Button'
 import styled from 'styled-components'
 
 const ErrorBoundaryStyled = styled.h1`
@@ -20,9 +20,7 @@ export const TaskErrorFallback = ({ error }) => {
   return (
     <ErrorBoundaryStyled>
       <p>{error}</p>
-      <Button large secondary type="submit" onClick={() => location.reload()}>
-        F5
-      </Button>
+      <MyButton onClick={() => location.reload()}>F5</MyButton>
     </ErrorBoundaryStyled>
   )
 }
