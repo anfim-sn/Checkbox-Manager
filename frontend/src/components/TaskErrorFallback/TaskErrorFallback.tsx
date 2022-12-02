@@ -14,13 +14,14 @@ const ErrorBoundaryStyled = styled.h1`
   }
 `
 
-// @ts-ignore
-export const TaskErrorFallback = ({ error }) => {
+export const TaskErrorFallback = ({ error }: { error: any }) => {
   console.log(error)
   return (
     <ErrorBoundaryStyled>
       <p>{error}</p>
-      <MyButton onClick={() => location.reload()}>F5</MyButton>
+      <MyButton variant="contained" onClick={() => location.reload()}>
+        F5
+      </MyButton>
     </ErrorBoundaryStyled>
   )
 }
