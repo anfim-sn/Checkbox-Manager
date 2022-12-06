@@ -23,6 +23,6 @@ export const RHFSwitch = ({ label, name, defaultChecked }: FormSwitchProps) => {
           style={{ color: theme.palette.text.primary }}
         />
       )}
-    ></Controller>
+    />
   )
 }
