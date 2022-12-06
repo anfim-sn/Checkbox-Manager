@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { FormControlLabel, Switch, TextField } from '@mui/material'
+import React from 'react'
+import { FormControlLabel, Switch, useTheme } from '@mui/material'
 import { useFormContext, Controller } from 'react-hook-form'
 
 type FormSwitchProps = {
@@ -10,6 +10,7 @@ type FormSwitchProps = {
 
 export const RHFSwitch = ({ label, name, defaultChecked }: FormSwitchProps) => {
   const { control } = useFormContext()
+  const theme = useTheme()
 
   return (
     <Controller
@@ -19,6 +20,7 @@ export const RHFSwitch = ({ label, name, defaultChecked }: FormSwitchProps) => {
         <FormControlLabel
           control={<Switch {...field} defaultChecked={defaultChecked} />}
           label={label || name}
+          style={{ color: theme.palette.text.primary }}
         />
       )}
     ></Controller>

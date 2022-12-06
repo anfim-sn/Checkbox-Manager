@@ -2,7 +2,7 @@ import React from 'react'
 import { allRoles } from '../../mock/allRoles'
 import { user } from '../../mock/user'
 import styled from 'styled-components'
-import { Typography } from '@mui/material'
+import { Typography, useTheme } from '@mui/material'
 import { RHFTextInput } from '../Form/RHFTextInput'
 import { MyButton } from '../Button/Button'
 import {
@@ -45,6 +45,8 @@ interface UserFormState {
 }
 
 export const EditUserForm = () => {
+  const theme = useTheme()
+  
   const schema = yup
     .object({
       name: yup.string().required('Field are require'),
@@ -84,7 +86,12 @@ export const EditUserForm = () => {
   }
   return (
     <EditFormStyled>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography
+        style={{ color: theme.palette.text.primary }}
+        variant="h4"
+        component="h1"
+        gutterBottom
+      >
         Edit User
       </Typography>
       <FormProvider {...formMethods}>
