@@ -1,71 +1,28 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
 import { TextField } from '@mui/material'
-import {
-  DeepMap,
-  FieldError,
-  FieldValues,
-  get,
-  Path,
-  RegisterOptions,
-  UseFormRegister,
-} from 'react-hook-form'
+import { useFormContext, Controller } from 'react-hook-form'
 
-const StyledTextField = styled(TextField)`
-  & label,
-  label.Mui-focused {
-    color: #fff;
-  }
-
-  & .MuiOutlinedInput-root {
-    color: #fff;
-
-    & fieldset {
-      border-color: #fff;
-    }
-
-    &:hover fieldset {
-      border-color: #d1d1d1;
-    }
-
-    &.Mui-focused fieldset {
-      border-color: #fff;
-    }
-
-    &.Mui-error fieldset {
-      border-color: red;
-    }
-  }
-`
-
-type FormInputProps<TFormValues extends FieldValues> = {
-  label: string
-  type: any
-  name: Path<TFormValues>
-  rules?: RegisterOptions
-  register?: UseFormRegister<TFormValues>
-  errors?: Partial<DeepMap<TFormValues, FieldError>>
+type FormInputProps = {
+  name: string
+  label?: string
 }
 
-export const RHFTextInput = <TFormValues extends Record<string, unknown>>({
-  label,
-  type,
-  name,
-  rules,
-  register,
-  errors,
-}: FormInputProps<TFormValues>) => {
-  const fieldError = get(errors, name)
-  const errorMessage = fieldError?.message
-  const hasError = !!(errors && fieldError)
+export const RHFTextInput = ({ label, name }: FormInputProps) => {
+  const { control, formState } = useFormContext()
 
   return (
-    <StyledTextField
-      label={label}
-      type={type}
-      {...(register && register(name, rules))}
-      error={hasError}
-      helperText={errorMessage}
-    />
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <TextField
+          {...field}
+          value={field.value || ''}
+          label={label || name}
+          error={!!error}
+          helperText={error?.message}
+        />
+      )}
+    ></Controller>
   )
 }
